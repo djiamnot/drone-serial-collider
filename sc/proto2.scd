@@ -61,11 +61,15 @@ Tuning.directory
     Tuning.just,
     "just"
 );
-
+)
+(
+a = [0, 1, 2, 11, 10, 9, 5, 4, 3, 6, 7, 8];
+r = [0.2, 0.25, 1.0, 0.333, 0.3, 0.666, 0.75];
+o = [48, 60, 72];
 
 Pbind(
     TempoClock.default.tempo = 0.5;
-    \instrument, \harpsi,
+    \instrument, \sins,
     \scale, Scale.choose(12, 12).tuning_(Tuning.choose(12)).postln,
     \degree, Pseq(a, 1),
     \dur, Pseq(r, inf),
@@ -84,3 +88,22 @@ p.next(())
 
 
 
+g = Tuning.choose(12);
+g.asString.split($.)[1]
+g = Tuning.young
+g.size
+g.ratios
+
+
+
+(
+SynthDef("Sin", {
+arg freq = 400, amp = 0.5, gate = 1, att = 0.01, sus = 0.5, rel = 0.5;
+var snd, env;
+env = Env.linen(att, sus, rel, amp).kr(doneAction: 2);
+snd = SinOsc.ar(freq: freq, mul: env) ! 2;
+Out.ar(0, snd);
+}).add;
+)
+
+Synth(\Sin);

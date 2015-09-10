@@ -29,6 +29,16 @@ SynthDef.new(\pluck, {  | t_trig=1, c1 = 1, c3=20, fb = 2, note = #[60, 1, 0.5] 
 )
 
 (
+SynthDef("Sin", {
+arg freq = 400, amp = 0.5, gate = 1, att = 0.01, sus = 0.5, rel = 0.5;
+var snd, env;
+env = Env.linen(att, sus, rel, amp).kr(doneAction: 2);
+snd = SinOsc.ar(freq: freq, mul: env) ! 2;
+Out.ar(0, snd);
+}).add;
+)
+
+(
 a = Scale.new(
     #[0, 1, 3, 5, 7, 8, 10],
     12,
