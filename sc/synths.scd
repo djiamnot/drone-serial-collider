@@ -31,19 +31,37 @@ SynthDef(\sins, {
     | freq = 400, att = 0.2, amp = 0.7, release = 0.1|
     var bnq = Array.with(
         1-SinOsc.ar(freq),
-        1-SinOsc.ar(freq * 1.0533610359546 *(SinOsc.kr(0.01)+ 1)),
-        1-SinOsc.ar(freq * 1.2541124095491 * (SinOsc.kr(0.01) + 1)),
-        1-SinOsc.ar(freq* 1.8768759933376 *(SinOsc.kr(0.01)-1), mul: 0.5);
+        1-SinOsc.ar(freq * 1.0533610359546 *(SinOsc.kr(0.01, mul: 0.1)+ 1)),
+        1-SinOsc.ar(freq * 1.2541124095491 * (SinOsc.kr(0.01, mul:  0.1) + 1)),
+        1-SinOsc.ar(freq* 1.8768759933376 *(SinOsc.kr(0.01)-1), mul: 0.05);
     );
-    var mix = bnq[0] * bnq[1] * bnq[2] * bnq[3] * 0.02;
-    var verb = (LeakDC.ar(FreeVerb.ar(mix, 0.7, 1, 0.5, Line.kr(0, 0.75, 15))));
+    var mix = bnq[0] * bnq[1] * bnq[2] * bnq[3] * 0.002;
+    var verb = (LeakDC.ar(FreeVerb.ar(mix, 0.7, 1, 0.5, Line.kr(0, 0.75, 1))));
     var env = Env.adsr(att, release, amp);
     var envGen = EnvGen.kr(env, 1, doneAction: 2);
-    var resonance = CombC.ar(verb, 0.01, 0.01, 0.2);
+    var resonance = Klank.ar(`[
+        [(freq*0.001) * 521, (freq*0.001) * 732, (freq*0.001) * 934],  // freqs
+		[0.7, 0.45, 0.25],// amps
+		[0.8, 0.8, 0.8]   // ring times
+		],
+        verb);
     Out.ar(0,(resonance*envGen)!2);
-}).add;
+}).play;
 )
 
+(
+
+SynthDef(\metal, {
+    var son;
+	son = Klank.ar(`[
+		[521, 732, 934],  // freqs
+		[0.7, 0.45, 0.25],// amps
+		[0.8, 0.8, 0.8]   // ring times
+		]
+	, Impulse.ar(1));
+	Out.ar(0, Pan2.ar(son * 0.2));
+}).add;
+)
 
 (
 Klang
@@ -58,6 +76,23 @@ SynthDef(\sins, {
         1-SinOsc.ar(freq * 1.0533610359546 *(SinOsc.kr(0.01)+ 1)),
         1-SinOsc.ar(freq * 1.2541124095491 * (SinOsc.kr(0.01) + 1)),
         1-SinOsc.ar(freq* 1.8768759933376 *(SinOsc.kr(0.01)-1), mul: 0.5);
+    );
+    var mix = bnq[0] * bnq[1] * bnq[2] * bnq[3] * 0.02;
+    var verb = (LeakDC.ar(FreeVerb.ar(mix, 0.7, 1, 0.5, Line.kr(0, 0.75, 15))));
+    Out.ar(0,verb!2);
+}).add;
+)
+
+Klank
+
+(
+SynthDef(\sins, {
+    | freq = 400|
+    var bnq = Array.fill(3, |n| 1-SinOsc.ar(freq * (n + 7)));
+        1-SinOsc.ar(freq),
+        1-SinOsc.ar(freq * 1.0533610359546 *(SinOsc.kr(0.01, mul: 0.1)+ 1)),
+        1-SinOsc.ar(freq * 1.2541124095491 * (SinOsc.kr(0.01, mul: 0.1) + 1)),
+        1-SinOsc.ar(freq* 1.8768759933376 *(SinOsc.kr(0.01)-1), mul: 0.01);
     );
     var mix = bnq[0] * bnq[1] * bnq[2] * bnq[3] * 0.02;
     var verb = (LeakDC.ar(FreeVerb.ar(mix, 0.7, 1, 0.5, Line.kr(0, 0.75, 15))));

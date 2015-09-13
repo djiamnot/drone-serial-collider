@@ -68,7 +68,7 @@ r = [0.2, 0.25, 1.0, 0.333, 0.3, 0.666, 0.75];
 o = [48, 60, 72];
 
 Pbind(
-    TempoClock.default.tempo = 0.5;
+    TempoClock.default.tempo = 1;
     \instrument, \sins,
     \scale, Scale.choose(12, 12).tuning_(Tuning.choose(12)).postln,
     \degree, Pseq(a, 1),
