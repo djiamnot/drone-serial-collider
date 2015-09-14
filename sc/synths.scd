@@ -28,27 +28,41 @@
 
 (
 SynthDef(\sins, {
-    | freq = 400, att = 0.2, amp = 0.7, release = 0.1|
+    | freq = 200, dur = 22, amp = 0.75|
     var bnq = Array.with(
         1-SinOsc.ar(freq),
-        1-SinOsc.ar(freq * 1.0533610359546 *(SinOsc.kr(0.01, mul: 0.1)+ 1)),
-        1-SinOsc.ar(freq * 1.2541124095491 * (SinOsc.kr(0.01, mul:  0.1) + 1)),
-        1-SinOsc.ar(freq* 1.8768759933376 *(SinOsc.kr(0.01)-1), mul: 0.05);
+        1-SinOsc.ar((freq * 4) * 1.0533610359546 * (SinOsc.kr(0.01, mul: 0.01)+ 1), mul: 0.6),
+        1-SinOsc.ar((freq * 5)  * 1.2541124095491 * (SinOsc.kr(0.01, mul:  0.01) + 1), mul: 0.5),
+        1-SinOsc.ar((freq * 6) * 1.8768759933376 *(SinOsc.kr(0.01)-1), mul: 0.01);
     );
-    var mix = bnq[0] * bnq[1] * bnq[2] * bnq[3] * 0.002;
-    var verb = (LeakDC.ar(FreeVerb.ar(mix, 0.7, 1, 0.5, Line.kr(0, 0.75, 1))));
-    var env = Env.adsr(att, release, amp);
-    var envGen = EnvGen.kr(env, 1, doneAction: 2);
-    var resonance = Klank.ar(`[
+    var att, sustain, amplitude, mix, env, envGen, resonance, verb;
+    att = dur*0.2;
+    sustain = dur;
+    amplitude = amp;
+    mix = bnq[0] * bnq[1] * bnq[2] * bnq[3] * 0.02;
+    env = Env.linen(att, sustain, dur, amplitude, \cub);
+    envGen = EnvGen.kr(env, 1, doneAction: 2);
+    resonance = Klank.ar(`[
         [(freq*0.001) * 521, (freq*0.001) * 732, (freq*0.001) * 934],  // freqs
 		[0.7, 0.45, 0.25],// amps
 		[0.8, 0.8, 0.8]   // ring times
 		],
-        verb);
-    Out.ar(0,(resonance*envGen)!2);
+        mix);
+        verb = (LeakDC.ar(FreeVerb.ar(resonance, 0.7, 1, 0.5, Line.kr(0, 0.75, 0.5))));
+    Out.ar(0,(verb*envGen)!2);
 }).play;
 )
 
+(
+SynthDef(\sins2, {
+    | freq = 400, att=0.2, systain=1, amp=0.7, dur=0.1|
+    var mix = SinOsc.ar(freq);
+    var verb = (LeakDC.ar(FreeVerb.ar(mix, 0.7, 1, 0.5, Line.kr(0, 0.75, 0.1))));
+    var env = Env.linen(att, 0.3, dur, amp);
+    var envGen = EnvGen.kr(env, 1, doneAction: 2);
+    Out.ar(0, (mix * envGen)!2);
+}).play;
+)
 (
 
 SynthDef(\metal, {

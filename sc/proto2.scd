@@ -64,11 +64,11 @@ Tuning.directory
 )
 (
 a = [0, 1, 2, 11, 10, 9, 5, 4, 3, 6, 7, 8];
-r = [0.2, 0.25, 1.0, 0.333, 0.3, 0.666, 0.75];
+r = [5.2, 5.25, 7.0, 5.333, 5.3, 6.666, 5.75];
 o = [48, 60, 72];
 
 Pbind(
-    TempoClock.default.tempo = 1;
+    TempoClock.default.tempo = 0.5;
     \instrument, \sins,
     \scale, Scale.choose(12, 12).tuning_(Tuning.choose(12)).postln,
     \degree, Pseq(a, 1),
