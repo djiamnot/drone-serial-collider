@@ -58,7 +58,7 @@ o = [48, 60, 72];
     \instrument, \sins,
     \scale, ~scale,
     \degree, Pseq(~rows.choose + [-18, -12].choose.postln, 1),
-    \type, Pwrand([\note, \rest], [0.9, 0.1], inf),
+   // \type, Pwrand([\note, \rest], [0.9, 0.1], inf),
     \dur, Pseq(r.scramble, inf),
     \amp, Prand(~dynamics, inf)
 );
@@ -78,7 +78,7 @@ o = [48, 60, 72];
     \instrument, \sins,
     \scale, ~scale,
     \degree, Pseq(~rows.choose + [0, 3, 6].choose.postln, 1),
-    \type, Pwrand([\note, \rest], [0.9, 0.1], inf),
+    //\type, Pwrand([\note, \rest], [0.9, 0.1], inf),
     \dur, Pseq(r.scramble, inf),
     \amp, Prand(~dynamics, inf)
 );
