@@ -95,16 +95,17 @@ o = [48, 60, 72];
 
 ~t1 = Ppar([~bass, ~mid1, ~mid2, ~hi]);
 ~t2 = Ppar([~mid2, ~hi, ~mid1]);
+~t3 = Ppar([~bass, ~mid1, ~mid2, ~hi]);
 
 Ppar([
-    Pseq([~t1, ~t1]),
-    Pseq([~t2, ~t1]),
-    Pseq([~t1, ~t2]),
-    Pseq([~t2, ~t2]),
-    Pseq([~t1, ~t1]),
-    Pseq([~t2, ~t1]),
-    Pseq([~t1, ~t2]),
-    Pseq([~t2, ~t2])
+    Pseq([~t1, ~t1, ~t3]),
+    Pseq([~t3, ~t2, ~t1]),
+    Pseq([~t1,~t3, ~t2]),
+    Pseq([~t2, ~t2, ~t3]),
+    Pseq([~t1, ~t1, ~t2]),
+    Pseq([~t2, ~t1, ~t1]),
+    Pseq([~t1, ~t2, ~t2]),
+    Pseq([~t2, ~t2, ~t3])
 ]).play;
 )
 0.7.rand
@@ -126,3 +127,10 @@ Pbind(
 
 'tm-2015-09-15T02:19:24.w64' - young
 
+Ardour:
+mark1 - mean4
+mark2 - unused
+mark3 - pythogorean - unused
+mark4 - pythagorean
+makr6 - kirnberger - unused
+mark7- young
