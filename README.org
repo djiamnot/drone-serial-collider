@@ -1,0 +1,87 @@
+# -*- org-confirm-babel-evaluate: nil -*-
+#+TITLE:     Serial Drone Collider (WT)
+#+AUTHOR:    Michal Seta
+#+EMAIL:     
+#+DATE:      2015-09-08
+#+LANGUAGE:  en
+#+INFOJS_OPT: view:showall toc:t ltoc:t mouse:underline path:http://orgmode.org/org-info.js
+#+LINK_HOME: http://home.fnal.gov/~neilsen
+#+LINK_UP: http://home.fnal.gov/~neilsen/notebook
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="../css/notebook.css" />
+#+LaTeX_CLASS: article
+#+EXPORT_SELECT_TAGS: export
+#+EXPORT_EXCLUDE_TAGS: noexport
+#+OPTIONS: H:2 num:nil toc:nil \n:nil @:t ::t |:t ^:{} _:{} *:t TeX:t LaTeX:t date:t tags:nil
+#+STARTUP: showall
+
+* Drones, collisions in series
+
+This piece is motivated by a call that Sandeep Bhagwati has issued for a tribute to the Austrian composer, Anton Webern. On September 15, 2015, the day of Webern's tragic death, Karlheinz Essl is launching a tribute called World Wide Webern where he invites people around the world to use his /Webern Clock/ to chime a melody using Webern's row(s). Sandeep would occupy Matralab on that day. Unfortunately I did not make to that room but I did take the opportunity to learn some things about SuperCollider patterns and flex some synthesis muscle.
+
+For this occasion, I thought that it would be interesting to hear Webern's atonal music in different tunings. For this particular exercise, I have chosen the source row derived from his unfinished Opus 32 and fed it through some simple manipulations and sent it to some complex instruments that play relatively long notes. The generative composition plays pieces in length between 15 and 40 minutes. The synthesized sounds unfold the Webern rows using a different tuning.
+
+The words /drone/  and /serial/ are used used intentionally in an ambiguous juxtaposition.
+
+** Tuning
+
+Various tunings were imployed, basically a random selection of those provided by the =Tuning= class in SuperCollider. 
+
+** The source row
+
+The source row is given with a guitar tablature in order to accomodate any guitarists out there.
+
+\vspace{18pt}
+
+#+BEGIN_SRC lilypond :file scores/basicRow.eps
+  
+  \header{tagline=##f}
+  \include "english.ly"
+  
+  theRow = \relative c {
+    \override Staff.BarLine #'transparent = ##t
+    \override Stem #'transparent = ##t 
+    fs2 g af f' e ef b bf a c cs d
+  
+  }
+  
+  \score { 
+    <<
+      \new Staff {
+        \set Staff.midiInstrument = #"electric guitar (clean)" 
+        \clef "treble_8"
+        
+        \theRow
+        \override BarLine #'transparent = ##t
+        
+      }
+      % \new TabStaff {
+      %   \tabFullNotation
+      %   \set Staff.stringTunings = \stringTuning <e, a, d g b e'>
+      %   \theRow
+      %   \override BarLine #'transparent = ##t
+      % }
+    >>    
+    
+    \midi { }
+    \layout { }
+  }
+  
+  
+#+END_SRC
+
+#+RESULTS:
+[[file:scores/basicRow.eps]]
+
+\vspace{18pt}
+This is the source row that was used by Anton Webern to write his opus 32, unfinished due to his premature death[fn:1]. This source row was given to an algorithm that figures out the other three forms (R, I, RI) and feeds it to drone synths.
+The algorythms are rather simple, several voices play the row in its various forms, transposed a few intervals. The forms and transposition intervals are chosen interactively (although the actual interaction process has not been established yet). 
+
+* Acknowledgement
+
+Having been inspired by Anton Webern way back, I could not have missed this opportunity to give him a tribute. This project was inspired by Karlheinz Essl's initiative for a World Wide Webern day on September 15 2015.
+
+Michał Seta
+
+* Footnotes
+
+[fn:1] Shere, David Matthew, A Survey of Webern's Life and Compositional Vocabulary
